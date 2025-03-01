@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Anna</title>
-    <link rel="stylesheet" href="style_pages.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <!-- Logo outside the container -->
@@ -59,7 +59,7 @@
             const hardcodedPassword = '123';
             const enteredPassword = document.getElementById('password').value;
             if (enteredPassword === hardcodedPassword) {
-                window.location.href = 'anna2.html';
+                window.location.href = 'vaani.html';
             } else {
                 alert('Invalid password. Please try again.');
             }

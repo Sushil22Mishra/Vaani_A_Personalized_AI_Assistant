@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Anna</title>
-    <link rel="stylesheet" href="style_pages.css"> <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- Link to the CSS file -->
 </head>
 <body>
     <!-- Logo placed at the top-left corner -->
@@ -33,6 +33,6 @@
         </form>
         <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
-    <script src="register.js"></script>
+    <script src="{{ url_for('static', filename='register.js') }}></script>
 </body>
 </html>
