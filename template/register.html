@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Anna</title>
+    <link rel="stylesheet" href="style_pages.css"> <!-- Link to the CSS file -->
+</head>
+<body>
+    <!-- Logo placed at the top-left corner -->
+    <img src="C:\Users\sushi\Desktop\Tantar-Mantar\Anna\img\logo.png" alt="Logo" id="logo">
+
+    <div class="container">
+        <h2>Create New User</h2>
+        <form id="register-form">
+            <!-- Name field -->
+            <input type="text" id="new-name" placeholder="Full Name" required>
+
+            <!-- Password field -->
+            <input type="password" id="new-password" placeholder="Password" required>
+
+            <!-- Confirm Password field -->
+            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+
+            <!-- Profile picture field -->
+            <div id="profile-pic-container">
+                <div id="profile-pic" class="profile-pic">+</div>
+                <input type="file" id="profile-input" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+    <script src="register.js"></script>
+</body>
+</html>

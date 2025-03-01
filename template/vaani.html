@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anna - Your Personal Voice Assistant</title>
+    <link rel="stylesheet" href="s2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="C:\Users\sushi\Desktop\Tantar-Mantar\Anna\img\fevi.png">
+</head>
+<body class="light-mode">
+    <div class="container">
+        <header>
+            <h1></h1>
+            <button id="theme-toggle" aria-label="Toggle dark mode">
+                <img src="C:\Users\sushi\Desktop\Tantar-Mantar\Anna\img\dark.png" alt="Dark mode" width="40" height="40">
+            </button>
+        </header>
+
+        <div id="wave">
+            <img  src="C:\Users\sushi\Desktop\Tantar-Mantar\Anna\img\logo.png" alt="Logo" id="logo">
+        </div>
+
+        <button id="start-btn" aria-label="Start listening">Start Listening</button>
+
+        <div id="chat-box" class="chat-box" role="log">
+          
+              
+            <!-- Messages will be appended here -->
+          </div>
+
+        <div id="output" aria-live="polite">Your voice will appear here...</div>
+
+        <div id="response"></div> <!-- Add this div element -->
+
+        <!-- Help Section -->
+    </div>
+
+    <script src="anna2.js"></script>
+</body>
+</html>
