@@ -1,0 +1,211 @@
+/* General Styling */
+body {
+    font-family: 'Roboto Condensed';
+
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    background: linear-gradient(135deg, #174D51 0%, #5fe7e5 100%);
+    color: #2a2a2a;
+}
+/* Logo Styling */
+/* Position the logo to the left side */
+#logo {
+    position: absolute;
+    top: 20px; /* Adjust the top position */
+    left: 20px; /* Adjust the left position */
+    width: 100px; /* Adjust the size */
+    height: auto;
+}
+
+/* Profile Picture Styling */
+/* Profile Picture Styling */
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #33555d;
+    color: white;
+    font-size: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+    border: 4px solid #00595f; /* Add a white border */
+}
+/* Fade-in animation */
+@keyframes neonFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+        filter: blur(2px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+.container {
+    animation: neonFadeIn 0.5s ease-out;
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.4), rgba(0, 255, 255, 0.4));
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.5);
+}
+.profile-pic:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: #5fe7e5; /* Change border color on hover */
+}
+
+
+
+input[type="file"] {
+    display: none;
+}
+
+/* Container Styling */
+.container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 25px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 450px;
+    width: 100%;
+    margin: 20px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-10px);
+}
+
+/* Welcome Text Styling */
+h2 {
+    margin-bottom: 10px;
+    font-size: 1.6em;
+    font-weight: 400;
+    color: #f2f2f2;
+    text-transform: capitalize;
+    font-family: 'Roboto';
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    opacity: 0.85;
+    letter-spacing: 0.5px;
+}
+
+
+/* Subtitle Styling */
+p {
+    font-size: 1.1em;
+    font-weight: 300;
+    color: #ccc;
+    letter-spacing: 0.5px;
+    margin-top: 15px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Input Fields Styling */
+input[type="text"],
+input[type="password"] {
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    background: rgba(255, 255, 255, 0.2);
+    color: #333;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+    outline: none;
+    color: #333;
+    box-shadow: 0 0 10px rgba(92, 141, 153, 0.6);
+}
+
+/* Button Styling */
+button {
+    padding: 12px;
+    background-color: #00595f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    background-color: #72fffd;
+    -webkit-text-fill-color: #174D51;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Link Styling */
+a {
+    text-decoration: none;
+    color: #128684;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0f6e5d;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 30px;
+        margin: 15px;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    #username {
+        font-size: 1.5em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    button {
+        font-size: 1em;
+    }
+
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+        font-size: 2em;
+    }
+}
