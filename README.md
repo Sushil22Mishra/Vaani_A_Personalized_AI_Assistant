@@ -36,7 +36,7 @@ Vaani is a sophisticated voice-based assistant that interacts with users through
 - Use smart home features for automation.
 
 ## License
-This project is licensed under (Apache-2.0 License)[https://github.com/Sushil22Mishra/Vaani_A_Personalized_AI_Assistant/blob/main/LICENSE].
+This project is licensed under [Apache-2.0 License](https://github.com/Sushil22Mishra/Vaani_A_Personalized_AI_Assistant/blob/main/LICENSE).
 
 ## Contributing
 Contributions are welcome. Please submit issues or pull requests to improve the project.
