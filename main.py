@@ -1,4 +1,5 @@
 from query import *
+from database_route import insert_user, get_user_by_name
 
 import os
 from fastapi import FastAPI, Request, HTTPException
@@ -57,10 +58,10 @@ async def process_query_endpoint(request: Request):
 
 # Database connection configuration
 db_config = {
-    'user': 'your_username',
-    'password': 'your_password',
+    'user': 'root',          # Ensure this is 'root'
+    'password': 'system',    # Ensure this matches the password you set
     'host': 'localhost',
-    'database': 'your_database'
+    'database': 'vaani_database'
 }
 
 # Model for receiving user data
@@ -76,28 +77,33 @@ def register_user(user: UserRegister):
         # Hash the password before storing
         hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
 
-        # Connect to the database
-        connection = mysql.connector.connect(**db_config)
-        cursor = connection.cursor()
-
         # Insert user data into MySQL
-        cursor.execute(
-            "INSERT INTO users (name, password, profile_pic) VALUES (%s, %s, %s)",
-            (user.name, hashed_password.decode('utf-8'), user.profile_pic)
-        )
-        connection.commit()
+        insert_user(user.name, hashed_password.decode('utf-8'), user.profile_pic)
 
         return {"message": "User  registered successfully!"}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Model for receiving login data
+class UserLogin(BaseModel):
+    name: str
+    password: str
+
+@app.post("/login")
+def login_user(user: UserLogin):
+    # Fetch user from the database
+    db_user = get_user_by_name(user.name)  # Call the function to fetch user data
+
+    if db_user is None:
+        raise HTTPException(status_code=400, detail="Invalid username or password")
+
+    # Check if the password matches
+    if bcrypt.checkpw(user.password.encode('utf-8'), db_user['password'].encode('utf-8')):
+        return {"success": True}
+    else:
+        raise HTTPException(status_code=400, detail="Invalid username or password")
     
-    finally:
-        # Close the cursor and connection
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
 
 # To run the FastAPI server, use the command:
 # uvicorn main:app --host 0.0.0.0 --port 8000 --reload
