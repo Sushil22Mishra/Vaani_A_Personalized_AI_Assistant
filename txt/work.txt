@@ -1,0 +1,9 @@
+Hi 
+I am Vaani
+ and here is a quick look at the tech behind me 
+I use TensorFlow for understanding and generating responses
+the pyttsx3 module handles our voice interactions so I can listen and speak 
+React helps me deliver a dynamic user interface 
+Bot UI and Converse j s enhance our chat with interactive elements and realtime communication 
+These technologies work together to make our interactions smooth and efficient
+If you have any questions or need help just ask

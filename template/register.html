@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Anna</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- Link to the CSS file -->
+    <title>Register - Vaani</title>
+    <link rel="stylesheet" href="static/styles.css"> <!-- Relative path to CSS -->
+    <link rel="icon" type="image/png" href="static/img/fevi.png"> <!-- Relative path to favicon -->
 </head>
 <body>
     <!-- Logo placed at the top-left corner -->
-    <img src="C:\Users\sushi\Desktop\Tantar-Mantar\Anna\img\logo.png" alt="Logo" id="logo">
+    <img src="static/img/logo.png" alt="Logo" id="logo"> <!-- Relative path to logo -->
 
     <div class="container">
         <h2>Create New User</h2>
@@ -33,6 +34,6 @@
         </form>
         <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
-    <script src="{{ url_for('static', filename='register.js') }}></script>
+    <script src="static/register.js"></script> <!-- Relative path to JavaScript -->
 </body>
 </html>

@@ -1,0 +1,213 @@
+/* General Styling */
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    transition: background-color 0.5s ease, color 0.5s ease;
+    background: linear-gradient(135deg, #003d42 0%, #00302f 100%);
+    color: #2a2a2a;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    flex-direction: row; /* Side-by-side layout */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full-screen height */
+    width: 100vw; /* Full width */
+    padding: 0 10%;
+    background: linear-gradient(135deg, #002427, #006e6c);
+    color: white;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.hero-content {
+    max-width: 50%;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    color: #c0ffff;
+    text-shadow: 0px 5px 20px rgba(3, 242, 255, 0.5);
+    margin: 0;
+}
+
+.hero .highlight {
+    color: #2fd7d2;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    color: #e0ffff;
+    max-width: 600px;
+    margin-top: 15px;
+}
+
+.cta-buttons {
+    margin-top: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #00595f;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 10px;
+    transition: 0.3s ease-in-out;
+}
+
+.cta-button:hover {
+    background-color: #2fd7d2;
+    box-shadow: 0 5px 15px rgba(3, 242, 255, 0.4);
+}
+
+.cta-button.secondary {
+    background: transparent;
+    border: 2px solid #2fd7d2;
+    color: #2fd7d2;
+}
+
+.cta-button.secondary:hover {
+    background: #2fd7d2;
+    color: #0f172a;
+}
+
+/* Hero Image */
+.hero-image img {
+    width: 300px;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { filter: drop-shadow(0 0 10px #2fd7d2); }
+    to { filter: drop-shadow(0 0 20px #5fe7e5); }
+}
+
+/* Features Section */
+.features {
+    text-align: center;
+    padding: 80px 10%;
+    background: linear-gradient(135deg, #001f23, #004e50);
+    color: white;
+}
+
+.features h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #72fffd;
+    text-shadow: 0px 4px 10px rgba(3, 242, 255, 0.5);
+}
+
+.feature-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.feature-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    flex: 1;
+    transition: transform 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+}
+
+.feature-box img {
+    width: 80px;
+    margin-bottom: 15px;
+}
+
+.feature-box h3 {
+    font-size: 1.5rem;
+    color: #2fd7d2;
+}
+
+.feature-box p {
+    font-size: 1rem;
+    color: #e0ffff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .feature-container {
+        flex-direction: column;
+    }
+}
+
+
+
+/* Vertical Navigation Bar (Appears Below Hero Section) */
+.vertical-navbar {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    padding: 40px 0;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column; /* Vertical layout */
+    align-items: center;
+}
+
+.nav-links li {
+    margin: 15px 0; /* Spacing between items */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    padding: 10px;
+}
+
+.nav-links a:hover {
+    color: #72fffd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .hero-content {
+        max-width: 80%;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero-image img {
+        width: 200px;
+        margin-top: 20px;
+    }
+}

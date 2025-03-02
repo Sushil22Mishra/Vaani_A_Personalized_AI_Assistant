@@ -3,31 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anna - Your Personal Voice Assistant</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='s2.css') }}">
+    <title>Vaani - Your Personal Voice Assistant</title>
+    <link rel="stylesheet" href="static/s2.css"> <!-- Relative path to CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="C:\Users\sushi\Desktop\Tantar-Mantar\Anna\img\fevi.png">
+    <link rel="icon" type="image/png" href="static/img/fevi.png"> <!-- Relative path to favicon -->
 </head>
 <body class="light-mode">
     <div class="container">
         <header>
             <h1></h1>
             <button id="theme-toggle" aria-label="Toggle dark mode">
-                <img src="C:\Users\sushi\Desktop\Tantar-Mantar\Anna\img\dark.png" alt="Dark mode" width="40" height="40">
+                <img src="static/img/dark.png" alt="Dark mode" width="40" height="40"> <!-- Relative path to dark mode image -->
             </button>
         </header>
 
         <div id="wave">
-            <img  src="C:\Users\sushi\Desktop\Tantar-Mantar\Anna\img\logo.png" alt="Logo" id="logo">
+            <img src="static/img/logo.png" alt="Logo" id="logo"> <!-- Relative path to logo -->
         </div>
 
         <button id="start-btn" aria-label="Start listening">Start Listening</button>
 
         <div id="chat-box" class="chat-box" role="log">
-          
-              
             <!-- Messages will be appended here -->
-          </div>
+        </div>
 
         <div id="output" aria-live="polite">Your voice will appear here...</div>
 
@@ -35,7 +33,6 @@
 
         <!-- Help Section -->
     </div>
-
-    <script src="vaani.js"></script>
+    <script src="static/vaani.js"></script> <!-- Relative path to JavaScript -->
 </body>
 </html>

@@ -21,22 +21,22 @@ def process_query(user_query):
     response = ''
     user_query = user_query.lower()
     if 'hello' in user_query:
-        response = 'Hi.  I am Anna What can i help you with ?'
+        response = 'Hi.  I am Vaani What can i help you with ?'
     #App Launching
     elif 'launch' in user_query:
             appName=  user_query.split('launch')[1]
             openApp(appName) 
             response = (f'Opening {appName}')  
        
-    elif 'what is anna' in user_query:
-        with open("C:\\Users\sushi\Documents\project hehe\proto\say.txt", 'r') as file:
-            content = file.read()
-            response = content
+    # elif 'what is Vaani' in user_query:
+    #     with open("txt\say.txt", 'r') as file:
+    #         content = file.read()
+    #         response = content
 
-    elif 'how do you work' in user_query:
-        with open("C:\\Users\sushi\Documents\project hehe\proto\work.txt", 'r') as file:
-            content = file.read()
-            response = content
+    # elif 'how do you work' in user_query:
+    #     with open("txt\work.txt", 'r') as file:
+    #         content = file.read()
+    #         response = content
     #misc
     elif 'search ' in user_query:
         search_term = user_query.split("for")[-1]

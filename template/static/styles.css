@@ -1,4 +1,9 @@
 /* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 body {
     font-family: 'Roboto Condensed';
 
@@ -100,6 +105,15 @@ h2 {
     opacity: 0.85;
     letter-spacing: 0.5px;
 }
+#logo {
+    transition: filter 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#logo:hover {
+    filter: drop-shadow(0 0 10px cyan) drop-shadow(0 0 20px rgba(3, 242, 255, 0.879));
+    transform: scale(1.05);
+}
+
 
 
 /* Subtitle Styling */
@@ -135,7 +149,7 @@ input[type="password"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.734);
     transform: scale(1.05);
     outline: none;
     color: #333;

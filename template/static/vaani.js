@@ -4,7 +4,6 @@ const recognition = new SpeechRecognition();
 recognition.interimResults = false;
 recognition.lang = 'en-US'; // Language preference
 
-
 // DOM elements
 const transcriptOutput = document.getElementById('output');
 const startBtn = document.getElementById('start-btn');
@@ -81,8 +80,8 @@ recognition.addEventListener('result', (e) => {
     const transcript = e.results[0][0].transcript;
     addMessageToChatBox(transcript, 'user');
     handleResponse(transcript);
-    
 });
+
 // When recognition ends
 recognition.addEventListener('end', () => {
     wave.style.animationPlayState = 'paused'; // Stop the pulse animation
@@ -92,6 +91,21 @@ recognition.addEventListener('end', () => {
 // Command handling logic
 function handleResponse(transcript) {
     try {
+        // Check for dark mode commands
+        if (transcript.includes('dark mode')) {
+            document.body.classList.add('dark-mode');
+            document.body.classList.remove('light-mode');
+            addMessageToChatBox("Switched to dark mode.", 'assistant');
+            speakResponse("Switched to dark mode.");
+            return; // Exit the function after handling the command
+        } else if (transcript.includes('light mode')) {
+            document.body.classList.add('light-mode');
+            document.body.classList.remove('dark-mode');
+            addMessageToChatBox("Switched to light mode.", 'assistant');
+            speakResponse("Switched to light mode.");
+            return; // Exit the function after handling the command
+        }
+
         // Send request to FastAPI backend
         fetch('http://localhost:8000/process_query', {
             method: 'POST',
@@ -108,11 +122,9 @@ function handleResponse(transcript) {
             } else {
                 const responseText = data.response; // Define responseText variable
                 responseDiv.innerHTML = responseText; // Update the response div
-                addMessageToChatBox(responseText, 'assistant');
+                addMessageToChatBox (responseText, 'assistant');
                 speakResponse(responseText);
             }
-            
-        
         })
         .catch(error => console.error('Error:', error));
     } catch (error) {
@@ -162,14 +174,14 @@ function speakResponse(text) {
         // Add a 1-second delay before speaking the text
         setTimeout(() => {
             window.speechSynthesis.speak(utterance);
-        }, );
+        }, 1000);
     } catch (error) {
         console.error("Error speaking response:", error);
     }
 }
 
 // Function to greet the user according to the time
-function greetUser() {
+function greetUser () {
     const currentTime = new Date().getHours();
     let greeting = '';
 
@@ -185,7 +197,7 @@ function greetUser() {
     speakResponse(greeting);
 }
 
-greetUser()
+greetUser ();
 
 // Load voices when the page is ready
 window.addEventListener('load', () => {

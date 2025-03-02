@@ -1,13 +1,14 @@
+from query import *
+
+import os
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 import bcrypt
-from pydantic import BaseModel
-import json
-from query import *
 from pydantic import BaseModel
 import mysql.connector
-import bcrypt
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -22,22 +23,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Set up static files and templates
+app.mount("/static", StaticFiles(directory="template/static"), name="static")
+template_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'template')
+templates = Jinja2Templates(directory=template_folder_path)
 
-
-
-
-
-# A basic route to check if the server is running
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to my FastAPI application!"}
+async def index(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
 
-# Route to serve favicon
+#Route to serve favicon
 @app.get("/favicon.ico")
 async def favicon():
     return FileResponse("favicon.ico")
 
-# Optional: API route for handling queries (you can use this for other parts of your app)
+# Optional: API route for handling queries
 @app.api_route("/process_query", methods=["POST", "OPTIONS"])
 async def process_query_endpoint(request: Request):
     try:
@@ -54,9 +54,6 @@ async def process_query_endpoint(request: Request):
             return {"response": response}
     except Exception as e:
         return {"error": str(e)}
-
-# To run the FastAPI server:
-# uvicorn proto:app --host 0.0.0.0 --port 8000 --reload
 
 # Database connection configuration
 db_config = {
@@ -101,3 +98,6 @@ def register_user(user: UserRegister):
             cursor.close()
         if connection:
             connection.close()
+
+# To run the FastAPI server, use the command:
+# uvicorn main:app --host 0.0.0.0 --port 8000 --reload
