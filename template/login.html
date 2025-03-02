@@ -31,7 +31,7 @@
     <script>
         const profilePic = document.getElementById('profile-pic');
         const profileInput = document.getElementById('profile-input');
-        const defaultName = 'User ';
+        const defaultName = 'User  ';
 
         profilePic.textContent = defaultName.charAt(0).toUpperCase();
 
@@ -71,15 +71,15 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Login successful!');
+                    // Redirect to vaani page directly
                     window.location.href = 'vaani.html'; // Change to your main page
                 } else {
-                    alert('Login failed: ' + data.message);
+                    console.error('Login failed: ' + data.message); // Log the error
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred, please try again.');
+                console.error('An error occurred, please try again.'); // Log the error
             });
         });
     </script>

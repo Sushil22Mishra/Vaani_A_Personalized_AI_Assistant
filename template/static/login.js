@@ -20,19 +20,18 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         if (data.success) {
             // Wait for the fade-out animation to complete before redirecting
             setTimeout(function() {
-                alert('Login successful!');
-                window.location.href = 'vaani.html'; // Change to your main page
-            }, 1000); // 1000 ms corresponds to the duration of the fade-out animation
+                window.location.href = 'vaani.html'; // Redirect to vaani page
+            }, 1000); // Optional: Adjust the delay if needed
         } else {
             // If login fails, remove the fade-out class and show error
             document.body.classList.remove('fade-out');
-            alert('Login failed: ' + data.message);
+            alert('Login failed: ' + data.message); // Keep this alert for login failure
         }
     })
     .catch(error => {
         // Handle error
         console.error('Error:', error);
         document.body.classList.remove('fade-out'); // Ensure the fade-out is removed in case of error
-        alert('An error occurred, please try again.');
+        alert('An error occurred, please try again.'); // Keep this alert for errors
     });
 });

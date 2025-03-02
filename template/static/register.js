@@ -8,13 +8,13 @@ document.getElementById('register-form').addEventListener('submit', async functi
 
     // Validate form fields
     if (!name || !password || !confirmPassword) {
-        alert('All fields are required!');
+        console.error('All fields are required!'); // Log validation failure
         return;
     }
 
     // Check if passwords match
     if (password !== confirmPassword) {
-        alert('Passwords do not match');
+        console.error('Passwords do not match'); // Log password mismatch
         return;
     }
 
@@ -47,14 +47,14 @@ async function sendRegisterData(name, password, profilePicUrl) {
 
         const result = await response.json();
         if (response.ok) {
-            alert(result.message);
-            window.location.href = 'vaani.html'; // Redirect to vaani page after registration
+            // Redirect to vaani page after registration
+            window.location.href = 'vaani.html'; 
         } else {
-            alert(result.detail || 'An error occurred during registration.'); // Handle error messages
+            console.error(result.detail || 'An error occurred during registration.'); // Log registration failure
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred while registering.');
+        console.error('An error occurred while registering.'); // Log registration error
     }
 }
 
