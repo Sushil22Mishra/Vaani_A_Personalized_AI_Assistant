@@ -1,3 +1,5 @@
+
+
 // Check for SpeechRecognition support in the browser
 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
@@ -209,3 +211,4 @@ window.addEventListener('load', () => {
         // Add theme toggle functionality here
     });
 });
+
