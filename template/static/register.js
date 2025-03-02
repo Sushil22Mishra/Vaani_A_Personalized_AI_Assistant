@@ -1,69 +1,65 @@
-document.getElementById('register-form').addEventListener('submit', async function (event) {
+document.getElementById('register-form').addEventListener('submit', async function (event) { 
     event.preventDefault(); // Prevent default form submission
 
-    // Get form data
     const name = document.getElementById('new-name').value;
     const password = document.getElementById('new-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
-
-    // Validate form fields
-    if (!name || !password || !confirmPassword) {
-        console.error('All fields are required!'); // Log validation failure
-        return;
-    }
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-        console.error('Passwords do not match'); // Log password mismatch
-        return;
-    }
-
-    // Get the profile picture URL from the user input
     const profilePicInput = document.getElementById('profile-input');
-    let profilePicUrl = '';
-
-    if (profilePicInput.files && profilePicInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = async function (e) {
-            profilePicUrl = e.target.result; // Store the base64 string for the profile picture
-            // Send the data to the server
-            await sendRegisterData(name, password, profilePicUrl);
-        };
-        reader.readAsDataURL(profilePicInput.files[0]);
-    } else {
-        // If no profile picture is chosen, use a default or empty value
-        await sendRegisterData(name, password, profilePicUrl);
+    
+    // Validation checks
+    if (!name || !password || !confirmPassword) {
+        console.error('All fields are required!');
+        return;
     }
+
+    if (password !== confirmPassword) {
+        console.error('Passwords do not match');
+        return;
+    }
+
+    // Get profile picture file (if selected)
+    const profilePicFile = profilePicInput.files[0] || null; 
+
+    // Send form data to the server
+    await sendRegisterData(name, password, profilePicFile);
 });
 
 // Function to send data to FastAPI
-async function sendRegisterData(name, password, profilePicUrl) {
+async function sendRegisterData(name, password, profilePic) {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("password", password);
+    if (profilePic) {
+        formData.append("profile_pic", profilePic);
+    }
+
     try {
-        const response = await fetch('http://localhost:8000/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, password, profile_pic: profilePicUrl }) // Ensure the key is correct
+        const response = await fetch("http://localhost:8000/register", {
+            method: "POST",
+            body: formData,
+            redirect: "follow", // Ensures fetch follows redirects
         });
 
-        const result = await response.json();
-        if (response.ok) {
-            // Redirect to vaani page after registration
-            window.location.href = 'vaani.html'; 
+        if (response.redirected) {
+            window.location.href = response.url; // Redirect manually
         } else {
-            console.error(result.detail || 'An error occurred during registration.'); // Log registration failure
+            const result = await response.json();
+            alert(result.detail || "An error occurred during registration.");
         }
     } catch (error) {
-        console.error('Error:', error);
-        console.error('An error occurred while registering.'); // Log registration error
+        console.error("Error:", error);
+        alert("An error occurred while registering.");
     }
 }
 
-// Handle profile picture click event to select a picture
+
+
+// Handle profile picture selection and preview
 const profilePic = document.getElementById('profile-pic');
 const profileInput = document.getElementById('profile-input');
 
 profilePic.addEventListener('click', function() {
-    profileInput.click(); // Trigger the file input when the profile picture is clicked
+    profileInput.click(); // Open file selection on profile picture click
 });
 
 profileInput.addEventListener('change', function(event) {
@@ -72,7 +68,7 @@ profileInput.addEventListener('change', function(event) {
         const reader = new FileReader();
         reader.onload = function(e) {
             profilePic.style.backgroundImage = `url(${e.target.result})`;
-            profilePic.textContent = ''; // Remove the "+" text when an image is selected
+            profilePic.textContent = ''; // Remove "+" symbol
             profilePic.style.backgroundSize = 'cover';
             profilePic.style.backgroundPosition = 'center';
         };

@@ -13,12 +13,12 @@
 
     <div class="container">
         <h2>Create New User</h2>
-        <form id="register-form">
+        <form id="register-form" action="/register" method="post" enctype="multipart/form-data">
             <!-- Name field -->
-            <input type="text" id="new-name" placeholder="Full Name" required>
+            <input type="text" name="name" id="new-name" placeholder="Full Name" required>
 
             <!-- Password field -->
-            <input type="password" id="new-password" placeholder="Password" required>
+            <input type="password" name="password" id="new-password" placeholder="Password" required>
 
             <!-- Confirm Password field -->
             <input type="password" id="confirm-password" placeholder="Confirm Password" required>
@@ -26,13 +26,13 @@
             <!-- Profile picture field -->
             <div id="profile-pic-container">
                 <div id="profile-pic" class="profile-pic">+</div>
-                <input type="file" id="profile-input" accept="image/*" style="display: none;">
+                <input type="file" name="profile_pic" id="profile-input" accept="image/*" style="display: none;">
             </div>
 
             <!-- Submit button -->
             <button type="submit">Register</button>
         </form>
-        <p>Already have an account? <a href="login.html">Login here</a></p>
+        <p>Already have an account? <a href="/login">Login here</a></p>
     </div>
     <script src="static/register.js"></script> <!-- Relative path to JavaScript -->
 </body>

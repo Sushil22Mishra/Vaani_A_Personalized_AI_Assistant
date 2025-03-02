@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vaani - AI Voice Assistant</title>
     <link rel="stylesheet" href="static/home.css"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-
 </head>
 
 <body>
     <!-- Hero Section -->
-     
     <section class="hero">
         <div class="hero-content" data-aos="fade-right">
             <h1>Meet <span class="highlight">Vaani</span>, Your AI Voice Assistant</h1>
             <p>Speak, command, and simplify your tasks with the power of AI.</p>
             <div class="cta-buttons">
-                <a href="register.html" class="cta-button" data-aos="zoom-in">Get Started</a>
-                <a href="login.html" class="cta-button secondary" data-aos="zoom-in">Login</a>
+                <a href="/register" class="cta-button" data-aos="zoom-in">Get Started</a> <!-- Updated link -->
+                <a href="/login" class="cta-button secondary" data-aos="zoom-in">Login</a> <!-- Updated link -->
             </div>
         </div>
         <div class="hero-image" data-aos="fade-left">
@@ -27,106 +24,100 @@
         </div>
     </section>
 
- <!-- Features Section -->
-<section class="features">
-    <h2 data-aos="fade-up">Why Choose Vaani?</h2>
-    <div class="feature-container">
-        <div class="feature-box" data-aos="fade-right">
-            <img src="static/img/voice.png" alt="Voice Control">
-            <h3>Voice-Powered Assistance</h3>
-            <p>Control your tasks hands-free with intelligent voice commands.</p>
+    <!-- Features Section -->
+    <section class="features">
+        <h2 data-aos="fade-up">Why Choose Vaani?</h2>
+        <div class="feature-container">
+            <div class="feature-box" data-aos="fade-right">
+                <img src="static/img/voice.png" alt="Voice Control">
+                <h3>Voice-Powered Assistance</h3>
+                <p>Control your tasks hands-free with intelligent voice commands.</p>
+            </div>
+            <div class="feature-box" data-aos="fade-up">
+                <img src="static/img/smart.png" alt="Smart AI">
+                <h3>Smart Learning</h3>
+                <p>Vaani adapts to your needs, making interactions smoother over time.</p>
+            </div>
+            <div class="feature-box" data-aos="fade-left">
+                <img src="static/img/info.png" alt="Information Retrieval">
+                <h3>Information Retrieval</h3>
+                <p>Get quick access to news, weather updates, and general knowledge with ease.</p>
+            </div>
         </div>
-        <div class="feature-box" data-aos="fade-up">
-            <img src="static/img/smart.png" alt="Smart AI">
-            <h3>Smart Learning</h3>
-            <p>Vaani adapts to your needs, making interactions smoother over time.</p>
-        </div>
-        <div class="feature-box" data-aos="fade-left">
-            <img src="static/img/info.png" alt="Information Retrieval">
-            <h3>Information Retrieval</h3>
-            <p>Get quick access to news, weather updates, and general knowledge with ease.</p>
-        </div>
-    </div>
-</section>
+    </section>
 
-
-<section id="benefits">
-    <h2>Who Can Benefit from Vaani?</h2>
-    <div class="benefits-container" data-aos="fade-up">
-        <div class="benefit-box">
-            <img src="static/img/student.png" alt="Students">
-            <h3>Students</h3>
-            <p>Take voice notes, set reminders, and get quick answers to study questions.</p>
+    <section id="benefits">
+        <h2>Who Can Benefit from Vaani?</h2>
+        <div class="benefits-container" data-aos="fade-up">
+            <div class="benefit-box">
+                <img src="static/img/student.png" alt="Students">
+                <h3>Students</h3>
+                <p>Take voice notes, set reminders, and get quick answers to study questions.</p>
+            </div>
+            <div class="benefit-box">
+                <img src="static/img/pro.png" alt="Professionals">
+                <h3>Professionals</h3>
+                <p>Manage tasks, schedule meetings, and boost productivity hands-free.</p>
+            </div>
+            <div class="benefit-box">
+                <img src="static/img/tech.png" alt="Tech Enthusiasts">
+                <h3>Tech Enthusiasts</h3>
+                <p>Explore AI-powered voice interaction and automation features.</p>
+            </div>
+            <div class="benefit-box">
+                <img src="static/img/dis.png" alt="Elderly & Differently Abled">
+                <h3>Elderly & Differently Abled</h3>
+                <p>Make technology more accessible with simple voice commands.</p>
+            </div>
         </div>
-        <div class="benefit-box" data-aos="fade-up">
-            <img src="static/img/pro.png" alt="Professionals">
-            <h3>Professionals</h3>
-            <p>Manage tasks, schedule meetings, and boost productivity hands-free.</p>
-        </div>
-
-        <div class="benefit-box" data-aos="fade-up">
-            <img src="static/img/tech.png" alt="Tech Enthusiasts" >
-            <h3>Tech Enthusiasts</h3>
-            <p>Explore AI-powered voice interaction and automation features.</p>
-        </div>
-        <div class="benefit-box" data-aos="fade-up">
-            <img src="static/img/dis.png" alt="Elderly & Differently Abled">
-            <h3>Elderly & Differently Abled</h3>
-            <p>Make technology more accessible with simple voice commands.</p>
-        </div>
-    </div>
-</section>
-
-
-
-    
+    </section>
 
     <!-- Vertical Navigation Bar (Appears After Scrolling) -->
     <nav class="vertical-navbar" data-aos="fade-up">
-    <ul class="nav-links">
-        <li><a href="home.html">Home</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="#" id="contact-link">Contact</a></li>
-        <li><a href="https://github.com/Sushil22Mishra/Vaani_A_Personalized_AI_Assistant/blob/main/README.md" target="_blank">About</a></li>
-        <footer>
-            <p>&copy; 2025 Vaani . All rights reserved.</p>
-        </footer>
-    </ul>
-</nav>
-
-   <!-- Contact Modal -->
-<div id="contact-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>Contact Me</h2>
-        
-        <!-- Icons for GitHub & LinkedIn -->
-        <div class="contact-icons">
-            <a href="https://github.com/Sushil22Mishra" target="_blank">
-                <img src="static/img/github.png" alt="GitHub">
-            </a>
-            <a href="https://www.linkedin.com/in/sushil-mishra-a4183b272" target="_blank">
-                <img src="static/img/linkedin.png" alt="LinkedIn">
-            </a>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="#" id="contact-link">Contact</a></li>
+            <li><a href="https://github.com/Sushil22Mishra/Vaani_A_Personalized_AI_Assistant/blob/main/README.md" target="_blank">About</a></li>
+            <footer>
+                <p>&copy; 2025 Vaani . All rights reserved.</p>
+            </footer>
+        </ul>
+    </nav>
+    
+       <!-- Contact Modal -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Contact Me</h2>
+            
+            <!-- Icons for GitHub & LinkedIn -->
+            <div class="contact-icons">
+                <a href="https://github.com/Sushil22Mishra" target="_blank">
+                    <img src="static/img/github.png" alt="GitHub">
+                </a>
+                <a href="https://www.linkedin.com/in/sushil-mishra-a4183b272" target="_blank">
+                    <img src="static/img/linkedin.png" alt="LinkedIn">
+                </a>
+            </div>
+    
+            <!-- Email Link -->
+            <p>
+                <a href="sushil22mishra@gmail.com" class="email-link">
+                    sushil22mishra@gmail.com
+                </a>
+            </p>
         </div>
-
-        <!-- Email Link -->
-        <p>
-            <a href="sushil22mishra@gmail.com" class="email-link">
-                sushil22mishra@gmail.com
-            </a>
-        </p>
     </div>
-</div>
-
-    </div>
-
-
-    <script src="static/home.js"></script> <!-- Link to your JavaScript file -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
- 
-</body>
-</html>
+    
+        </div>
+    
+    
+        <script src="static/home.js"></script> <!-- Link to your JavaScript file -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+        <script>
+            AOS.init();
+        </script>
+     
+    </body>
+    </html>

@@ -8,8 +8,10 @@
     <link rel="icon" type="image/png" href="static/img/fevi.png"> <!-- Relative path to favicon -->
 </head>
 <body>
-    <!-- Logo outside the container -->
-    <img src="static/img/logo.png" alt="Logo" id="logo"> <!-- Relative path to logo -->
+    <!-- Logo outside the container, wrapped in a link -->
+    <a href="/"> <!-- Link to home page -->
+        <img src="static/img/logo.png" alt="Logo" id="logo"> <!-- Relative path to logo -->
+    </a>
 
     <div class="container">
         <h2>Welcome to Vaani</h2>
@@ -25,13 +27,13 @@
             <input type="password" id="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
-        <p>Don't have an account? <a href="register.html">Register here</a></p>
+        <p>Don't have an account? <a href="/register">Register here</a></p> <!-- Updated link -->
     </div>
 
     <script>
         const profilePic = document.getElementById('profile-pic');
         const profileInput = document.getElementById('profile-input');
-        const defaultName = 'User  ';
+        const defaultName = 'User   ';
 
         profilePic.textContent = defaultName.charAt(0).toUpperCase();
 
@@ -68,13 +70,17 @@
                 },
                 body: JSON.stringify({ name: username, password: password })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Redirect to vaani page directly
-                    window.location.href = 'vaani.html'; // Change to your main page
+            .then(response => {
+                if (response.redirected) {
+                    // If the response is a redirect, navigate to the new URL
+                    window.location.href = response.url; // Redirect to vaani page
                 } else {
-                    console.error('Login failed: ' + data.message); // Log the error
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data && data.detail) {
+                    console.error('Login failed: ' + data.detail); // Log the error
                 }
             })
             .catch(error => {
