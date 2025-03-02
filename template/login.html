@@ -16,11 +16,12 @@
 
         <div id="profile-pic-container">
             <div id="profile-pic" class="profile-pic">A</div>
-            <p id="username">Anjali</p>
+            <p id="username">Username</p>
         </div>
         <input type="file" id="profile-input" accept="image/*">
 
         <form id="login-form">
+            <input type="text" id="username-input" placeholder="Username" required>
             <input type="password" id="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
@@ -30,11 +31,9 @@
     <script>
         const profilePic = document.getElementById('profile-pic');
         const profileInput = document.getElementById('profile-input');
-        const username = document.getElementById('username');
-        const defaultName = 'Anjali';
+        const defaultName = 'User ';
 
         profilePic.textContent = defaultName.charAt(0).toUpperCase();
-        username.textContent = defaultName;
 
         profilePic.addEventListener('click', () => {
             profileInput.click();
@@ -57,13 +56,31 @@
         const loginForm = document.getElementById('login-form');
         loginForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            const hardcodedPassword = '123';
-            const enteredPassword = document.getElementById('password').value;
-            if (enteredPassword === hardcodedPassword) {
-                window.location.href = 'vaani.html';
-            } else {
-                alert('Invalid password. Please try again.');
-            }
+
+            const username = document.getElementById('username-input').value;
+            const password = document.getElementById('password').value;
+
+            // Send login request
+            fetch('http://localhost:8000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: username, password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Login successful!');
+                    window.location.href = 'vaani.html'; // Change to your main page
+                } else {
+                    alert('Login failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred, please try again.');
+            });
         });
     </script>
 </body>

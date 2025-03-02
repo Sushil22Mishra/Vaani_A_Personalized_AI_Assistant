@@ -24,33 +24,33 @@ document.getElementById('register-form').addEventListener('submit', async functi
 
     if (profilePicInput.files && profilePicInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = async function (e) {
             profilePicUrl = e.target.result; // Store the base64 string for the profile picture
             // Send the data to the server
-            sendRegisterData(name, password, profilePicUrl);
+            await sendRegisterData(name, password, profilePicUrl);
         };
         reader.readAsDataURL(profilePicInput.files[0]);
     } else {
         // If no profile picture is chosen, use a default or empty value
-        sendRegisterData(name, password, profilePicUrl);
+        await sendRegisterData(name, password, profilePicUrl);
     }
 });
 
-// Function to send registration data to the server
+// Function to send data to FastAPI
 async function sendRegisterData(name, password, profilePicUrl) {
     try {
-        const response = await fetch('http://localhost:5000/register', {
+        const response = await fetch('http://localhost:8000/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, password, profilePicUrl }),
+            body: JSON.stringify({ name, password, profile_pic: profilePicUrl }) // Ensure the key is correct
         });
 
         const result = await response.json();
         if (response.ok) {
-            alert(result.message); // Success message
-            window.location.href = 'login.html'; // Redirect to login
+            alert(result.message);
+            window.location.href = 'vaani.html'; // Redirect to vaani page after registration
         } else {
-            alert(result.message); // Error message
+            alert(result.detail || 'An error occurred during registration.'); // Handle error messages
         }
     } catch (error) {
         console.error('Error:', error);
@@ -79,55 +79,3 @@ profileInput.addEventListener('change', function(event) {
         reader.readAsDataURL(file);
     }
 });
-
-document.getElementById('register-form').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    // Get form data
-    const name = document.getElementById('new-name').value;
-    const password = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-    const profilePicInput = document.getElementById('profile-input');
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-        alert('Passwords do not match');
-        return;
-    }
-
-    let profilePicUrl = "";
-
-    // Convert profile picture to Base64
-    if (profilePicInput.files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = async function (e) {
-            profilePicUrl = e.target.result;
-            await sendRegisterData(name, password, profilePicUrl);
-        };
-        reader.readAsDataURL(profilePicInput.files[0]);
-    } else {
-        await sendRegisterData(name, password, profilePicUrl);
-    }
-});
-
-// Function to send data to FastAPI
-async function sendRegisterData(name, password, profilePicUrl) {
-    try {
-        const response = await fetch('http://localhost:8000/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, password, profilePic: profilePicUrl })
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            alert(result.message);
-            window.location.href = 'login.html'; // Redirect to login page
-        } else {
-            alert(result.detail);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred while registering.');
-    }
-}

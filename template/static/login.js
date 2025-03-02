@@ -1,7 +1,7 @@
 document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent form submission
 
-    const username = document.getElementById('username').value;
+    const username = document.getElementById('username-input').value;
     const password = document.getElementById('password').value;
 
     // Add fade-out class to the body before sending the request
@@ -13,7 +13,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ name: username, password: password })
     })
     .then(response => response.json())
     .then(data => {
@@ -21,7 +21,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
             // Wait for the fade-out animation to complete before redirecting
             setTimeout(function() {
                 alert('Login successful!');
-                window.location.href = 'index.html'; // Change to your main page
+                window.location.href = 'vaani.html'; // Change to your main page
             }, 1000); // 1000 ms corresponds to the duration of the fade-out animation
         } else {
             // If login fails, remove the fade-out class and show error
