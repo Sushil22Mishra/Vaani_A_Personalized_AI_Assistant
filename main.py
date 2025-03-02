@@ -67,8 +67,6 @@ async def login_user(user: UserLogin):
 async def register_page(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})  # Serve register.html
 
-from fastapi.responses import RedirectResponse
-
 @app.post("/register")
 async def register_user(
     name: str = Form(...),
