@@ -31,29 +31,29 @@
     </div>
 
     <script>
-        const profilePic = document.getElementById('profile-pic');
-        const profileInput = document.getElementById('profile-input');
-        const defaultName = 'User   ';
+        // const profilePic = document.getElementById('profile-pic');
+        // const profileInput = document.getElementById('profile-input');
+        // const defaultName = 'User   ';
 
-        profilePic.textContent = defaultName.charAt(0).toUpperCase();
+        // profilePic.textContent = defaultName.charAt(0).toUpperCase();
 
-        profilePic.addEventListener('click', () => {
-            profileInput.click();
-        });
+        // profilePic.addEventListener('click', () => {
+        //     profileInput.click();
+        // });
 
-        profileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    profilePic.style.backgroundImage = `url(${e.target.result})`;
-                    profilePic.textContent = '';
-                    profilePic.style.backgroundSize = 'cover';
-                    profilePic.style.backgroundPosition = 'center';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+        // profileInput.addEventListener('change', (event) => {
+        //     const file = event.target.files[0];
+        //     if (file) {
+        //         const reader = new FileReader();
+        //         reader.onload = (e) => {
+        //             profilePic.style.backgroundImage = `url(${e.target.result})`;
+        //             profilePic.textContent = '';
+        //             profilePic.style.backgroundSize = 'cover';
+        //             profilePic.style.backgroundPosition = 'center';
+        //         };
+        //         reader.readAsDataURL(file);
+        //     }
+        // });
 
         const loginForm = document.getElementById('login-form');
         loginForm.addEventListener('submit', (event) => {

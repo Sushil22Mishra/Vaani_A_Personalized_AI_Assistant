@@ -18,20 +18,18 @@ document.getElementById('register-form').addEventListener('submit', async functi
     }
 
     // Get profile picture file (if selected)
-    const profilePicFile = profilePicInput.files[0] || null; 
+    // const profilePicFile = profilePicInput.files[0] || null; 
 
     // Send form data to the server
-    await sendRegisterData(name, password, profilePicFile);
+    await sendRegisterData(name, password);
 });
 
 // Function to send data to FastAPI
-async function sendRegisterData(name, password, profilePic) {
+async function sendRegisterData(name, password) {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("password", password);
-    if (profilePic) {
-        formData.append("profile_pic", profilePic);
-    }
+   
 
     try {
         const response = await fetch("http://localhost:8000/register", {
@@ -54,24 +52,24 @@ async function sendRegisterData(name, password, profilePic) {
 
 
 
-// Handle profile picture selection and preview
-const profilePic = document.getElementById('profile-pic');
-const profileInput = document.getElementById('profile-input');
+// // Handle profile picture selection and preview
+// const profilePic = document.getElementById('profile-pic');
+// const profileInput = document.getElementById('profile-input');
 
-profilePic.addEventListener('click', function() {
-    profileInput.click(); // Open file selection on profile picture click
-});
+// profilePic.addEventListener('click', function() {
+//     profileInput.click(); // Open file selection on profile picture click
+// });
 
-profileInput.addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            profilePic.style.backgroundImage = `url(${e.target.result})`;
-            profilePic.textContent = ''; // Remove "+" symbol
-            profilePic.style.backgroundSize = 'cover';
-            profilePic.style.backgroundPosition = 'center';
-        };
-        reader.readAsDataURL(file);
-    }
-});
+// profileInput.addEventListener('change', function(event) {
+//     const file = event.target.files[0];
+//     if (file) {
+//         const reader = new FileReader();
+//         reader.onload = function(e) {
+//             profilePic.style.backgroundImage = `url(${e.target.result})`;
+//             profilePic.textContent = ''; // Remove "+" symbol
+//             profilePic.style.backgroundSize = 'cover';
+//             profilePic.style.backgroundPosition = 'center';
+//         };
+//         reader.readAsDataURL(file);
+//     }
+// });
