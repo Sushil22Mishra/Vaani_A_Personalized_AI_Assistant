@@ -82,7 +82,7 @@ async def register_user(
         # Insert user data into MySQL
         insert_user(name, hashed_password.decode('utf-8'), profile_pic_data)
 
-        # ✅ Return a redirect response to the frontend
+        #  Return a redirect response to the frontend
         return RedirectResponse(url="/vaani", status_code=303)
     
     except Exception as e:

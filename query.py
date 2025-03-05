@@ -1,148 +1,108 @@
 import datetime
 import webbrowser
 import pyautogui
-import requests
-import time
+from fuzzywuzzy import process
+import random
 
-
-#function for opening apps
+# Function for opening apps
 def openApp(appName):
-    
     pyautogui.press('win')
     pyautogui.typewrite(appName)
-    
-    pyautogui.press('=')
     pyautogui.press('enter')
 
+# Predefined commands and their responses
+COMMANDS = {
+    "hello": "Hi, I am Vaani! What can I help you with?",
+     # Popular Websites
+    "google": lambda: (webbrowser.open("https://google.com"), "Opening Google..."),
+    "github": lambda: (webbrowser.open("https://github.com"), "Opening GitHub..."),
+    "youtube": lambda: (webbrowser.open("https://youtube.com"), "Opening YouTube..."),
+    "linkedin": lambda: (webbrowser.open("https://www.linkedin.com"), "Opening LinkedIn..."),
+    "instagram": lambda: (webbrowser.open("https://instagram.com"), "Opening Instagram..."),
+    "facebook": lambda: (webbrowser.open("https://facebook.com"), "Opening Facebook..."),
+    "twitter": lambda: (webbrowser.open("https://twitter.com"), "Opening Twitter..."),
+    "reddit": lambda: (webbrowser.open("https://reddit.com"), "Opening Reddit..."),
+    "pinterest": lambda: (webbrowser.open("https://pinterest.com"), "Opening Pinterest..."),
+    "gmail": lambda: (webbrowser.open("https://gmail.com"), "Opening Gmail..."),
+    "whatsapp": lambda: (webbrowser.open("https://web.whatsapp.com"), "Opening WhatsApp..."),
+    "telegram": lambda: (webbrowser.open("https://web.telegram.org"), "Opening Telegram..."),
+    "discord": lambda: (webbrowser.open("https://discord.com"), "Opening Discord..."),
     
-# Define a function for processing queries
+    # Entertainment & Streaming
+    "netflix": lambda: (webbrowser.open("https://netflix.com"), "Opening Netflix..."),
+    "amazon prime": lambda: (webbrowser.open("https://www.primevideo.com"), "Opening Amazon Prime Video..."),
+    "hotstar": lambda: (webbrowser.open("https://www.hotstar.com"), "Opening Hotstar..."),
+    "spotify": lambda: (webbrowser.open("https://open.spotify.com"), "Opening Spotify..."),
+    
+    # Cloud Storage
+    "google drive": lambda: (webbrowser.open("https://drive.google.com/drive/my-drive"), "Opening Google Drive..."),
+    "dropbox": lambda: (webbrowser.open("https://dropbox.com"), "Opening Dropbox..."),
+    "onedrive": lambda: (webbrowser.open("https://onedrive.live.com"), "Opening OneDrive..."),
+    
+    # Productivity & Learning
+    "stack overflow": lambda: (webbrowser.open("https://stackoverflow.com"), "Opening Stack Overflow..."),
+    "notion": lambda: (webbrowser.open("https://notion.so"), "Opening Notion..."),
+    "zoom": lambda: (webbrowser.open("https://zoom.us"), "Opening Zoom..."),
+    "chatgpt": lambda: (webbrowser.open("https://chat.openai.com"), "Opening ChatGPT..."),
+    "coursera": lambda: (webbrowser.open("https://coursera.org"), "Opening Coursera..."),
+    "edu plus": lambda: (webbrowser.open("https://mauli.edupluscampus.com"), "Opening Edu Plus Login Page..."),
+    "university result": lambda: (webbrowser.open("https://sgbau.ucanapply.com/"), "You can check the results here..."),
+    "sgbau": lambda: (webbrowser.open("https://sgbau.ucanapply.com/"), "You can check the results here..."),
+
+    # Utility Commands
+    "time": lambda: f"The time is {datetime.datetime.now().strftime('%H:%M:%S')}",
+    "weather": lambda: (webbrowser.open("https://www.google.com/search?q=weather"), "Here is the weather update..."),
+    "news": lambda: (webbrowser.open("https://news.google.com"), "Here are the latest news updates..."),
+    "calculator": lambda: (webbrowser.open("https://www.google.com/search?q=calculator"), "Opening Calculator..."),
+    "calendar": lambda: (webbrowser.open("https://calendar.google.com"), "Opening Google Calendar..."),
+
+    # Food & Shopping
+    "restaurant": lambda: (webbrowser.open("https://google.com/search?q=restaurants near me"), "Searching for restaurants near you..."),
+    "online shopping": lambda: (webbrowser.open("https://google.com/search?q=online shopping"), "You can shop online from these websites..."),
+    "amazon": lambda: (webbrowser.open("https://amazon.com"), "Opening Amazon..."),
+    "flipkart": lambda: (webbrowser.open("https://www.flipkart.com"), "Opening Flipkart..."),
+    "myntra": lambda: (webbrowser.open("https://www.myntra.com"), "Opening Myntra..."),
+    "zomato": lambda: (webbrowser.open("https://www.zomato.com"), "Opening Zomato..."),
+    "swiggy": lambda: (webbrowser.open("https://www.swiggy.com"), "Opening Swiggy..."),
+
+}
+
+# Function to process user queries
 def process_query(user_query):
-   
-    response = ''
-    user_query = user_query.lower()
-    if 'hello' in user_query:
-        response = 'Hi.  I am Vaani What can i help you with ?'
-    #App Launching
-    elif 'launch' in user_query:
-            appName=  user_query.split('launch')[1]
-            openApp(appName) 
-            response = (f'Opening {appName}')  
-       
-    # elif 'what is Vaani' in user_query:
-    #     with open("txt\say.txt", 'r') as file:
-    #         content = file.read()
-    #         response = content
+    user_query = user_query.lower().strip()
 
-    # elif 'how do you work' in user_query:
-    #     with open("txt\work.txt", 'r') as file:
-    #         content = file.read()
-    #         response = content
-    #misc
-    elif 'search ' in user_query:
-        search_term = user_query.split("for")[-1]
-        url = f"https://google.com/search?q={search_term}"
-        response = 'Here is what I found for ' + search_term
-        webbrowser.get().open(url)    
-    elif 'wikipedia for' in user_query:
-        response = 'Searching Wikipedia...'
-        search_term = user_query.split("for")[-1]
-        url = f"https://en.wikipedia.org/wiki/{search_term}"
-        response += ' Here is what I found on wikipedia for ' + search_term
-        webbrowser.get().open(url)
-    elif 'google drive' in user_query:
-            webbrowser.open("https://drive.google.com/drive/my-drive")
-            response = 'Opening Google Drive'
-
-
-    elif 'where is' in user_query:
-        location = user_query.split("is")[-1]
-        location = location.strip()
-        response= (f'here is {location} on Google Maps')
-        url = f"https://www.google.com/maps/search/{location}"
-        webbrowser.open(url)
-
-
-    elif 'time ' in user_query:
-        strTime = datetime.datetime.now().strftime("%H:%M:%S")
-        print(f'the time is : {strTime}')
-        response = (f'the time is : {strTime}')
-
-    #educational
-    elif 'university result' in user_query or 'sgbau' in user_query:
-        webbrowser.open("https://sgbau.ucanapply.com/")
-        response = 'You can check the results here '
-    elif 'github' in user_query:
-            webbrowser.open("https://github.com/")
-            response = 'Opening Git Hub'
-    elif 'linkedin' in user_query:
-            webbrowser.open("https://www.linkedin.com/")
-            response = 'Opening LinkedIn' 
-    elif 'edu plus' in user_query:
-        webbrowser.open("https://mauli.edupluscampus.com/")
-        response = 'Opening Edu plus Login Page' 
-    elif 'stack overflow' in user_query or 'help in programming' in user_query:
-        webbrowser.open("https://stackoverflow.com")
-        response = 'Opening Stack Overflow'
-
-
-
-
-
-
-    #social media
-    elif 'youtube' in user_query:
-        webbrowser.open("https://youtube.com")
-        response = 'Opening YouTube'
-    elif 'instagram' in user_query:
-        webbrowser.open("https://instagram.com")
-        response = 'Opening Instagram' 
-    elif 'facebook' in user_query:
-        webbrowser.open("https://facebook.com")
-        response = 'Opening Facebook'
-    elif 'google' in user_query:
-            webbrowser.open("https://google.com")
-            response = 'Opening google'
-    elif 'twitter' in user_query:
-        webbrowser.open("https://twitter.com")
-        response = 'Opening Twitter'
-    elif 'reddit' in user_query:
-        webbrowser.open("https://reddit.com")
-        response = 'Opening Reddit'
-    elif 'pinterest' in user_query:
-        webbrowser.open("https://pinterest.com")
-        response = 'Opening Pinterest'
-    elif 'gmail' in user_query:
-        webbrowser.open("https://gmail.com")
-        response = 'Opening Gmail'
-    elif 'discord' in user_query:
-        webbrowser.open("https://discord.com")
-        response = 'Opening Discord'
-    elif 'netflix' in user_query:
-        webbrowser.open("https://netflix.com")
-        response = 'Opening Netflix'
-    elif 'whatsapp' in user_query:
-            webbrowser.open("https://whatsapp.com")
-            response = 'Opening WhatsApp'
-    elif 'amazon' in user_query:
-            webbrowser.open("https://amazon.com")
-            response = 'Opening Amazon you can shop online here'
-
-    elif 'online shopping' in user_query or 'shop online' in user_query or 'e-commerce' in user_query:
-                url = f"https://google.com/search?q=online shopping"
-                response = 'You can shop online from these Websites '
-                webbrowser.get().open(url)
+    # Handling app launch separately
+    if "launch" in user_query:
+        app_name = user_query.replace("launch", "").strip()
+        openApp(app_name)
+        return f"Opening {app_name}..."
     
-    elif 'restaurant' in user_query or 'restaurants'in user_query:
-                url = f"https://google.com/search?q=restaurants near me "
-                response = 'These are some well known places near you'
-                webbrowser.get().open(url)
-    #if no data to show
-    else:
-        search_term = user_query
-        url = f"https://google.com/search?q={search_term}"
-        response = 'Here is what I found for ' + search_term
-        webbrowser.get().open(url)
-
-   
-        
-    return response
+    # Handling search queries
+    if "search" in user_query:
+        search_term = user_query.replace("search", "").strip()
+        webbrowser.open(f"https://www.google.com/search?q={search_term}")
+        return f"Here is what I found for {search_term}"
+    
+    if "wikipedia for" in user_query:
+        search_term = user_query.replace("wikipedia for", "").strip()
+        webbrowser.open(f"https://en.wikipedia.org/wiki/{search_term}")
+        return f"Here is what I found on Wikipedia for {search_term}"
+    
+    if "where is" in user_query:
+        location = user_query.replace("where is", "").strip()
+        webbrowser.open(f"https://www.google.com/maps/search/{location}")
+        return f"Here is {location} on Google Maps"
+    
+    # Fuzzy match user query with predefined commands
+    match, confidence = process.extractOne(user_query, COMMANDS.keys())
+    
+    if confidence > 80:
+        response = COMMANDS[match]
+        if callable(response):
+            _, message = response()
+            return message
+        return response
+    
+    # Default action: Google search
+    webbrowser.open(f"https://www.google.com/search?q={user_query}")
+    return f"Here is what I found for {user_query}"
