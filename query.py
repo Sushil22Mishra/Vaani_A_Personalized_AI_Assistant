@@ -3,6 +3,8 @@ import webbrowser
 import pyautogui
 from fuzzywuzzy import process
 import random
+import re
+import math
 
 # Function for opening apps
 def openApp(appName):
@@ -92,6 +94,54 @@ def process_query(user_query):
         location = user_query.replace("where is", "").strip()
         webbrowser.open(f"https://www.google.com/maps/search/{location}")
         return f"Here is {location} on Google Maps"
+    
+
+    # Function to extract number from query
+    def extract_number(query, keyword):
+        match = re.search(rf"{keyword} (\d+)", query)
+        return int(match.group(1)) if match else None
+    
+    # Square Calculation
+    if "square of" in user_query:
+        number = extract_number(user_query, "square of")
+        if number is not None:
+            result = number ** 2
+            return f"The square of {number} is = {result}"
+        else:
+            return "Please provide a valid number."
+
+    # Cube Calculation
+    if "cube of" in user_query:
+        number = extract_number(user_query, "cube of")
+        if number is not None:
+            result = number ** 3
+            return f"The cube of {number} is = {result}"
+        else:
+            return "Please provide a valid number."
+    
+    # Square Root Calculation
+    if "square root of" in user_query:
+        number = extract_number(user_query, "square root of")
+        if number is not None:
+            result = math.sqrt(number)
+            return f"The square root of {number} is = {result:.2f}"
+        else:
+            return "Please provide a valid number."
+
+    # General Calculation
+    if "calculate" in user_query:
+        expression = re.sub(r"[^0-9+\-*/(). x]", "", user_query.replace("calculate", "").strip())
+        expression = expression.replace("x", "*")  # Convert 'x' to '*'
+
+        if re.match(r'^[0-9+\-*/(). ]+$', expression):  # Allow only valid operators
+            try:
+                result = eval(expression)
+                return f"The result of {expression} is = {result}"
+            except:
+                return "Sorry, I couldn't calculate that."
+        else:
+            return "Invalid input. Please enter a valid mathematical expression."
+
     
     # Fuzzy match user query with predefined commands
     match, confidence = process.extractOne(user_query, COMMANDS.keys())
