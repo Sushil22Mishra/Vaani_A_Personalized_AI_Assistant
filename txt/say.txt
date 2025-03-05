@@ -1,6 +1,4 @@
-Hello Im Vaani a sophisticated voice-based assistant powered by advanced technologies 
-
-I use machine learning to understand and respond to your questions and text-to-speech to read content aloud
-Im designed to provide accurate information and assist with various tasks through natural language processing and real-time interactions 
-Feel free to ask me anything
-and I will leverage my capabilities to help you
+Hello! I am Vaani, your intelligent voice assistant.
+I am here to assist you with calculations, information, web searches, and much more.
+You can ask me to open apps, find answers, or even do math for you.
+Just speak, and I will respond.

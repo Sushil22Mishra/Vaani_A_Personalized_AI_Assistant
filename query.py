@@ -2,19 +2,58 @@ import datetime
 import webbrowser
 import pyautogui
 from fuzzywuzzy import process
+import os
 import random
 import re
 import math
+import time
+import threading
+from plyer import notification
 
-# Function for opening apps
+
+
+def setReminder(reminder_text, seconds):
+    def reminder():
+        time.sleep(seconds)
+        notification.notify(
+            title="Reminder",
+            message=reminder_text,
+            timeout=10  # Notification stays for 10 seconds
+        )
+
+    threading.Thread(target=reminder, daemon=True).start()
+    return f"Reminder set for {seconds} seconds: {reminder_text}"
+
+
 def openApp(appName):
-    pyautogui.press('win')
-    pyautogui.typewrite(appName)
-    pyautogui.press('enter')
+    pyautogui.press('win')  # Opens the Start menu
+    time.sleep(0.5)  # Small delay for stability
+    pyautogui.typewrite(appName)  # Types the app name
+    time.sleep(0.5)  
+    pyautogui.press('enter')  # Launches the app)
+
+
+
+def read_text_file(file_name):
+    file_path = os.path.join("txt", file_name)  # Ensures correct path format
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            content = file.read().strip()
+            return content if content else "The introduction file is empty."
+    except FileNotFoundError:
+        return "I couldn't find my introduction file."
+    
+
+    
+
+
 
 # Predefined commands and their responses
 COMMANDS = {
+
+
     "hello": "Hi, I am Vaani! What can I help you with?",
+    "hi": "Hi, I am Vaani! What can I help you with?",
      # Popular Websites
     "google": lambda: (webbrowser.open("https://google.com"), "Opening Google..."),
     "github": lambda: (webbrowser.open("https://github.com"), "Opening GitHub..."),
@@ -67,11 +106,31 @@ COMMANDS = {
     "zomato": lambda: (webbrowser.open("https://www.zomato.com"), "Opening Zomato..."),
     "swiggy": lambda: (webbrowser.open("https://www.swiggy.com"), "Opening Swiggy..."),
 
+    "introduce yourself": lambda: ("", "txt\\say.txt"),
+    "who are you": lambda: ("", "txt\\say.txt"),
+
 }
+
 
 # Function to process user queries
 def process_query(user_query):
     user_query = user_query.lower().strip()
+
+     # Detect "remind me to ..." pattern
+    match = re.search(r"remind me to (.+) in (\d+) (seconds?|minutes?|hours?)", user_query)
+    if match:
+        task = match.group(1)
+        time_value = int(match.group(2))
+        unit = match.group(3)
+
+        # Convert time units to seconds
+        if "minute" in unit:
+            time_value *= 60
+        elif "hour" in unit:
+            time_value *= 3600
+
+        return setReminder(task, time_value)
+
 
     # Handling app launch separately
     if "launch" in user_query:
@@ -94,7 +153,8 @@ def process_query(user_query):
         location = user_query.replace("where is", "").strip()
         webbrowser.open(f"https://www.google.com/maps/search/{location}")
         return f"Here is {location} on Google Maps"
-    
+    if "introduce yourself" in user_query or "who are you" in user_query:
+        return read_text_file("say.txt")
 
     # Function to extract number from query
     def extract_number(query, keyword):
@@ -142,6 +202,8 @@ def process_query(user_query):
         else:
             return "Invalid input. Please enter a valid mathematical expression."
 
+
+    
     
     # Fuzzy match user query with predefined commands
     match, confidence = process.extractOne(user_query, COMMANDS.keys())

@@ -1,6 +1,5 @@
 from query import *
 from database_route import insert_user, get_user_by_name
-
 import os
 import webbrowser
 from fastapi import FastAPI, Request, HTTPException, UploadFile, File, Form
