@@ -2,6 +2,7 @@ import datetime
 import webbrowser
 import pyautogui
 from fuzzywuzzy import process
+import mysql.connector
 import os
 import random
 import re
@@ -202,7 +203,7 @@ def process_query(user_query):
         else:
             return "Invalid input. Please enter a valid mathematical expression."
 
-
+ 
     
     
     # Fuzzy match user query with predefined commands
