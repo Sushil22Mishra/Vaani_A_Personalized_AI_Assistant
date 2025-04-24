@@ -89,14 +89,26 @@ COMMANDS = {
     "coursera": lambda: (webbrowser.open("https://coursera.org"), "Opening Coursera..."),
     "edu plus": lambda: (webbrowser.open("https://mauli.edupluscampus.com"), "Opening Edu Plus Login Page..."),
     "university result": lambda: (webbrowser.open("https://sgbau.ucanapply.com/"), "You can check the results here..."),
-    "sgbau": lambda: (webbrowser.open("https://sgbau.ucanapply.com/"), "You can check the results here..."),
+    "sgbau": lambda: (webbrowser.open("https://sgbau.ucanapply.com/"), "Here is the official website of SGBAU..."),
 
     # Utility Commands
-    "time": lambda: f"The time is {datetime.datetime.now().strftime('%H:%M:%S')}",
     "weather": lambda: (webbrowser.open("https://www.google.com/search?q=weather"), "Here is the weather update..."),
     "news": lambda: (webbrowser.open("https://news.google.com"), "Here are the latest news updates..."),
     "calculator": lambda: (webbrowser.open("https://www.google.com/search?q=calculator"), "Opening Calculator..."),
     "calendar": lambda: (webbrowser.open("https://calendar.google.com"), "Opening Google Calendar..."),
+
+    #Finance Sites
+    "stock market": lambda: (webbrowser.open("https://www.marketwatch.com"), "Opening MarketWatch..."),
+    "bitcoin price": lambda: (webbrowser.open("https://www.coindesk.com"), "Opening CoinDesk..."),
+    "forbes": lambda: (webbrowser.open("https://www.forbes.com/finance/"), "Opening Forbes Finance..."),
+    "financial calculator": lambda: (webbrowser.open("https://www.bankrate.com/calculators/"), "Opening Bankrate Calculators..."),
+    "moneycontrol": lambda: (webbrowser.open("https://www.moneycontrol.com"), "Opening MoneyControl..."),
+    "economic times": lambda: (webbrowser.open("https://economictimes.indiatimes.com/markets"), "Opening Economic Times..."),
+    "ndtv profit": lambda: (webbrowser.open("https://www.ndtv.com/business"), "Opening NDTV Profit..."),
+    "yahoo finance india": lambda: (webbrowser.open("https://in.finance.yahoo.com"), "Opening Yahoo Finance India..."),
+    "financial express": lambda: (webbrowser.open("https://www.financialexpress.com/market"), "Opening Financial Express..."),
+    "mint": lambda: (webbrowser.open("https://www.livemint.com"), "Opening Mint..."),
+
 
     # Food & Shopping
     "restaurant": lambda: (webbrowser.open("https://google.com/search?q=restaurants near me"), "Searching for restaurants near you..."),
@@ -106,6 +118,19 @@ COMMANDS = {
     "myntra": lambda: (webbrowser.open("https://www.myntra.com"), "Opening Myntra..."),
     "zomato": lambda: (webbrowser.open("https://www.zomato.com"), "Opening Zomato..."),
     "swiggy": lambda: (webbrowser.open("https://www.swiggy.com"), "Opening Swiggy..."),
+    # Travel & Food Sites
+    "make my trip": lambda: (webbrowser.open("https://www.makemytrip.com"), "Opening MakeMyTrip..."),
+    "cleartrip": lambda: (webbrowser.open("https://www.cleartrip.com"), "Opening Cleartrip..."),
+    "yatra": lambda: (webbrowser.open("https://www.yatra.com"), "Opening Yatra..."),
+    "goibibo": lambda: (webbrowser.open("https://www.goibibo.com"), "Opening Goibibo..."),
+    "irctc": lambda: (webbrowser.open("https://www.irctc.co.in"), "Opening IRCTC..."),
+    "dominos": lambda: (webbrowser.open("https://www.dominos.co.in"), "Opening Domino's India..."),
+    "freshmenu": lambda: (webbrowser.open("https://www.freshmenu.com"), "Opening FreshMenu..."),
+    "ubereats": lambda: (webbrowser.open("https://www.ubereats.com"), "Opening UberEats..."),
+
+    "currency converter": lambda: (webbrowser.open("https://www.xe.com/currencyconverter/"), "Opening Currency Converter..."),
+
+
 
     "introduce yourself": lambda: ("", "txt\\say.txt"),
     "who are you": lambda: ("", "txt\\say.txt"),

@@ -1,51 +1,43 @@
-
-
 // Check for SpeechRecognition support in the browser
 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.interimResults = false;
-recognition.lang = 'en-US'; // Language preference
+recognition.lang = 'en-US';
+recognition.continuous = true; // Enable continuous listening
 
 // DOM elements
 const transcriptOutput = document.getElementById('output');
 const startBtn = document.getElementById('start-btn');
 const wave = document.getElementById('wave');
 const chatBox = document.getElementById('chat-box');
-const responseDiv = document.getElementById('response'); // Define the response div
+const responseDiv = document.getElementById('response');
 
 // Text-to-Speech variables
 let voices = [];
 const synth = window.speechSynthesis;
 
-// Fetch available voices
-function loadVoices() {
-    voices = synth.getVoices();
-    // Check if voices are available immediately or wait for the 'voiceschanged' event
-    if (voices.length) {
-        selectVoice(); // Call the function to set the preferred voice
-    }
-}
+let isListening = false;
+let userRequestedStop = false;
 
-// Set the desired voice
-function selectVoice() {
-    // You can change the voice name below to match your desired voice
-    const preferredVoiceName = "Google US English"; // Change to desired voice name
-    const preferredVoice = voices.find(voice => voice.name === preferredVoiceName);
-    
-    if (preferredVoice) {
-        // Store the preferred voice globally for later use
-        window.preferredVoice = preferredVoice;
-    } else {
-        console.warn("Preferred voice not found, defaulting to the first available voice.");
-        window.preferredVoice = voices[0]; // Fallback to the first available voice
-    }
+// Load voices properly using a Promise
+function loadVoicesProperly() {
+    return new Promise((resolve) => {
+        let voices = synth.getVoices();
+        if (voices.length) {
+            resolve(voices);
+        } else {
+            synth.onvoiceschanged = () => {
+                voices = synth.getVoices();
+                resolve(voices);
+            };
+        }
+    });
 }
 
 const chatMessages = document.createElement('div');
 chatMessages.classList.add('chat-messages');
 chatBox.appendChild(chatMessages);
 
-// Function to add message to chat box
 function addMessageToChatBox(message, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message');
@@ -55,60 +47,71 @@ function addMessageToChatBox(message, sender) {
     } else {
         messageDiv.classList.add('assistant-message');
     }
-    // Set the message content
+
     const messageText = document.createElement('p');
     messageText.textContent = message;
     messageDiv.appendChild(messageText);
 
-    // Append the message to the chat box
     chatMessages.appendChild(messageDiv);
 
-    // Scroll to the bottom of the chat box
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Add initial message to chat box
-
-// When user clicks start
 startBtn.addEventListener('click', () => {
-    transcriptOutput.textContent = "• Listening...";
-    recognition.start();
-    wave.style.animationPlayState = 'running'; // Start the pulse animation
-    startBtn.disabled = true; // Disable button while listening
+    if (!isListening) {
+        isListening = true;
+        userRequestedStop = false;
+        recognition.start();
+        transcriptOutput.textContent = "• Listening...";
+        wave.style.animationPlayState = 'running';
+        startBtn.disabled = true;
+    }
 });
 
-// When speech is detected
 recognition.addEventListener('result', (e) => {
-    const transcript = e.results[0][0].transcript;
+    const transcript = e.results[e.results.length - 1][0].transcript.trim().toLowerCase();
     addMessageToChatBox(transcript, 'user');
+
+    if (transcript === "stop listening" || transcript === "stop") {
+        userRequestedStop = true;
+        isListening = false;
+        recognition.stop();
+        transcriptOutput.textContent = "• Stopped Listening";
+        wave.style.animationPlayState = 'paused';
+        startBtn.disabled = false;
+        addMessageToChatBox("Okay, I stopped listening.", 'assistant');
+        speakResponse("Okay, I stopped listening.");
+        return;
+    }
+
     handleResponse(transcript);
 });
 
-// When recognition ends
 recognition.addEventListener('end', () => {
-    wave.style.animationPlayState = 'paused'; // Stop the pulse animation
-    startBtn.disabled = false; // Re-enable the button
+    wave.style.animationPlayState = 'paused';
+    startBtn.disabled = false;
+
+    if (isListening && !userRequestedStop) {
+        recognition.start(); // Restart automatically if not stopped by user
+    }
 });
 
-// Command handling logic
 function handleResponse(transcript) {
     try {
-        // Check for dark mode commands
         if (transcript.includes('dark mode')) {
             document.body.classList.add('dark-mode');
             document.body.classList.remove('light-mode');
             addMessageToChatBox("Switched to dark mode.", 'assistant');
             speakResponse("Switched to dark mode.");
-            return; // Exit the function after handling the command
+            return;
         } else if (transcript.includes('light mode')) {
             document.body.classList.add('light-mode');
             document.body.classList.remove('dark-mode');
             addMessageToChatBox("Switched to light mode.", 'assistant');
             speakResponse("Switched to light mode.");
-            return; // Exit the function after handling the command
+            return;
         }
 
-        // Send request to FastAPI backend
         fetch('http://localhost:8000/process_query', {
             method: 'POST',
             headers: {
@@ -122,9 +125,9 @@ function handleResponse(transcript) {
                 console.error('Error:', data.error);
                 addMessageToChatBox(data.error, 'assistant');
             } else {
-                const responseText = data.response; // Define responseText variable
-                responseDiv.innerHTML = responseText; // Update the response div
-                addMessageToChatBox (responseText, 'assistant');
+                const responseText = data.response;
+                responseDiv.innerHTML = responseText;
+                addMessageToChatBox(responseText, 'assistant');
                 speakResponse(responseText);
             }
         })
@@ -134,7 +137,6 @@ function handleResponse(transcript) {
     }
 }
 
-// Text-to-Speech function
 function speakResponse(text) {
     if (!text) {
         console.error("No text to speak");
@@ -149,41 +151,31 @@ function speakResponse(text) {
             return;
         }
 
-        utterance.voice = window.preferredVoice || voices[1]; // Use the preferred voice or fallback
-        utterance.pitch = 1.2; // Slightly higher pitch for a more natural female tone
-        utterance.rate = 0.9; // Normal speed
-        utterance.volume = 1; // Maximum volume
+        utterance.voice = window.preferredVoice || voices[0];
+        utterance.pitch = 1.2;
+        utterance.rate = 0.9;
+        utterance.volume = 1;
 
-        utterance.onstart = function(event) {
+        utterance.onstart = function () {
             console.log("Speech started");
         };
 
-        utterance.onend = function(event) {
+        utterance.onend = function () {
             console.log("Speech ended");
         };
 
-        utterance.onerror = function(event) {
+        utterance.onerror = function (event) {
             console.error("Speech error", event);
         };
 
-        console.log("Speaking response:");
-        console.log(text);
-        console.log(utterance);
-        console.log(window.speechSynthesis.pending);
-        console.log(window.speechSynthesis.speaking);
-        console.log(window.speechSynthesis.paused);
-
-        // Add a 1-second delay before speaking the text
-        setTimeout(() => {
-            window.speechSynthesis.speak(utterance);
-        }, 1000);
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
     } catch (error) {
         console.error("Error speaking response:", error);
     }
 }
 
-// Function to greet the user according to the time
-function greetUser () {
+function greetUser() {
     const currentTime = new Date().getHours();
     let greeting = '';
 
@@ -199,16 +191,29 @@ function greetUser () {
     speakResponse(greeting);
 }
 
-greetUser ();
+window.addEventListener('load', async () => {
+    voices = await loadVoicesProperly();
+    console.log("Available voices:", voices.map(v => v.name));
 
-// Load voices when the page is ready
-window.addEventListener('load', () => {
-    loadVoices();
-    // Listen for voices changed event
-    speechSynthesis.onvoiceschanged = loadVoices;
-    document.getElementById('theme-toggle').addEventListener('click', function() {
+    const preferredVoiceName = "Google US English";
+    const preferredVoice = voices.find(voice => voice.name === preferredVoiceName);
+
+    if (preferredVoice) {
+        window.preferredVoice = preferredVoice;
+    } else {
+        console.warn("Preferred voice not found, using default.");
+        window.preferredVoice = voices[0];
+    }
+
+    setTimeout(() => {
+        const test = new SpeechSynthesisUtterance("Hello, this is a voice test.");
+        test.voice = window.preferredVoice;
+        window.speechSynthesis.speak(test);
+    }, 3000);
+
+    document.getElementById('theme-toggle').addEventListener('click', function () {
         document.body.classList.toggle('dark-mode');
-        // Add theme toggle functionality here
     });
-});
 
+    greetUser();
+});
