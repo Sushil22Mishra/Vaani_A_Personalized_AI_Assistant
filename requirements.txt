@@ -8,6 +8,7 @@ plyer==2.1.0
 mysql-connector==2.2.9
 mysql-connector-python==9.2.0
 pydantic==1.10.9
+requests==2.32.3
 
 
 

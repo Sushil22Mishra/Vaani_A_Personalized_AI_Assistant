@@ -8,8 +8,12 @@ import random
 import re
 import math
 import time
+import requests
 import threading
 from plyer import notification
+import psutil
+import GPUtil
+
 
 
 
@@ -25,6 +29,16 @@ def setReminder(reminder_text, seconds):
     threading.Thread(target=reminder, daemon=True).start()
     return f"Reminder set for {seconds} seconds: {reminder_text}"
 
+def get_ip():
+    try:
+        response = requests.get('https://api64.ipify.org?format=json')
+        if response.status_code == 200:
+            return response.json()['ip']
+        else:
+            return None
+    except Exception:
+        return None
+
 
 def openApp(appName):
     pyautogui.press('win')  # Opens the Start menu
@@ -33,6 +47,50 @@ def openApp(appName):
     time.sleep(0.5)  
     pyautogui.press('enter')  # Launches the app)
 
+
+def close_tab():
+    pyautogui.hotkey('ctrl', 'w')
+def get_system_info():
+    # RAM info
+    ram = psutil.virtual_memory()
+    ram_total = round(ram.total / (1024 ** 3), 2)  # in GB
+    ram_used = round(ram.used / (1024 ** 3), 2)
+    ram_percentage = ram.percent
+
+    # Battery info
+    battery = psutil.sensors_battery()
+    if battery:
+        battery_percent = battery.percent
+        charging = battery.power_plugged
+    else:
+        battery_percent = None
+        charging = None
+
+    # GPU info
+    gpus = GPUtil.getGPUs()
+    if gpus:
+        gpu = gpus[0]
+        gpu_name = gpu.name
+        gpu_load = f"{gpu.load*100:.1f}%"
+        gpu_memory_total = f"{gpu.memoryTotal}MB"
+        gpu_memory_used = f"{gpu.memoryUsed}MB"
+    else:
+        gpu_name = "No GPU found"
+        gpu_load = "N/A"
+        gpu_memory_total = "N/A"
+        gpu_memory_used = "N/A"
+
+    # Create a response
+    info = f"RAM: {ram_used} GB used out of {ram_total} GB ({ram_percentage}%).\n"
+
+    if battery_percent is not None:
+        info += f"Battery: {battery_percent}% {'(Charging)' if charging else '(Not Charging)'}.\n"
+    else:
+        info += "Battery: No battery detected.\n"
+
+    info += f"GPU: {gpu_name}, Load: {gpu_load}, Memory Usage: {gpu_memory_used}/{gpu_memory_total}."
+
+    return info
 
 
 def read_text_file(file_name):
@@ -43,7 +101,13 @@ def read_text_file(file_name):
             return content if content else "The introduction file is empty."
     except FileNotFoundError:
         return "I couldn't find my introduction file."
-    
+
+def take_screenshot():
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"screenshot_{timestamp}.png"
+    screenshot = pyautogui.screenshot()
+    screenshot.save(filename)
+    return filename
 
     
 
@@ -72,23 +136,23 @@ COMMANDS = {
     
     # Entertainment & Streaming
     "netflix": lambda: (webbrowser.open("https://netflix.com"), "Opening Netflix..."),
-    "amazon prime": lambda: (webbrowser.open("https://www.primevideo.com"), "Opening Amazon Prime Video..."),
+    "amazonprime": lambda: (webbrowser.open("https://www.primevideo.com"), "Opening Amazon Prime Video..."),
     "hotstar": lambda: (webbrowser.open("https://www.hotstar.com"), "Opening Hotstar..."),
     "spotify": lambda: (webbrowser.open("https://open.spotify.com"), "Opening Spotify..."),
     
     # Cloud Storage
-    "google drive": lambda: (webbrowser.open("https://drive.google.com/drive/my-drive"), "Opening Google Drive..."),
+    "googledrive": lambda: (webbrowser.open("https://drive.google.com/drive/my-drive"), "Opening Google Drive..."),
     "dropbox": lambda: (webbrowser.open("https://dropbox.com"), "Opening Dropbox..."),
     "onedrive": lambda: (webbrowser.open("https://onedrive.live.com"), "Opening OneDrive..."),
     
     # Productivity & Learning
-    "stack overflow": lambda: (webbrowser.open("https://stackoverflow.com"), "Opening Stack Overflow..."),
+    "stackoverflow": lambda: (webbrowser.open("https://stackoverflow.com"), "Opening Stack Overflow..."),
     "notion": lambda: (webbrowser.open("https://notion.so"), "Opening Notion..."),
     "zoom": lambda: (webbrowser.open("https://zoom.us"), "Opening Zoom..."),
     "chatgpt": lambda: (webbrowser.open("https://chat.openai.com"), "Opening ChatGPT..."),
     "coursera": lambda: (webbrowser.open("https://coursera.org"), "Opening Coursera..."),
-    "edu plus": lambda: (webbrowser.open("https://mauli.edupluscampus.com"), "Opening Edu Plus Login Page..."),
-    "university result": lambda: (webbrowser.open("https://sgbau.ucanapply.com/"), "You can check the results here..."),
+    "eduplus": lambda: (webbrowser.open("https://mauli.edupluscampus.com"), "Opening Edu Plus Login Page..."),
+    "universityresult": lambda: (webbrowser.open("https://sgbau.ucanapply.com/"), "You can check the results here..."),
     "sgbau": lambda: (webbrowser.open("https://sgbau.ucanapply.com/"), "Here is the official website of SGBAU..."),
 
     # Utility Commands
@@ -98,28 +162,28 @@ COMMANDS = {
     "calendar": lambda: (webbrowser.open("https://calendar.google.com"), "Opening Google Calendar..."),
 
     #Finance Sites
-    "stock market": lambda: (webbrowser.open("https://www.marketwatch.com"), "Opening MarketWatch..."),
-    "bitcoin price": lambda: (webbrowser.open("https://www.coindesk.com"), "Opening CoinDesk..."),
+    "stockmarket": lambda: (webbrowser.open("https://www.marketwatch.com"), "Opening MarketWatch..."),
+    "bitcoinprice": lambda: (webbrowser.open("https://www.coindesk.com"), "Opening CoinDesk..."),
     "forbes": lambda: (webbrowser.open("https://www.forbes.com/finance/"), "Opening Forbes Finance..."),
-    "financial calculator": lambda: (webbrowser.open("https://www.bankrate.com/calculators/"), "Opening Bankrate Calculators..."),
+    "financialcalculator": lambda: (webbrowser.open("https://www.bankrate.com/calculators/"), "Opening Bankrate Calculators..."),
     "moneycontrol": lambda: (webbrowser.open("https://www.moneycontrol.com"), "Opening MoneyControl..."),
     "economic times": lambda: (webbrowser.open("https://economictimes.indiatimes.com/markets"), "Opening Economic Times..."),
     "ndtv profit": lambda: (webbrowser.open("https://www.ndtv.com/business"), "Opening NDTV Profit..."),
-    "yahoo finance india": lambda: (webbrowser.open("https://in.finance.yahoo.com"), "Opening Yahoo Finance India..."),
+    "yahoo financeindia": lambda: (webbrowser.open("https://in.finance.yahoo.com"), "Opening Yahoo Finance India..."),
     "financial express": lambda: (webbrowser.open("https://www.financialexpress.com/market"), "Opening Financial Express..."),
     "mint": lambda: (webbrowser.open("https://www.livemint.com"), "Opening Mint..."),
 
 
     # Food & Shopping
     "restaurant": lambda: (webbrowser.open("https://google.com/search?q=restaurants near me"), "Searching for restaurants near you..."),
-    "online shopping": lambda: (webbrowser.open("https://google.com/search?q=online shopping"), "You can shop online from these websites..."),
+    "onlineshopping": lambda: (webbrowser.open("https://google.com/search?q=online shopping"), "You can shop online from these websites..."),
     "amazon": lambda: (webbrowser.open("https://amazon.com"), "Opening Amazon..."),
     "flipkart": lambda: (webbrowser.open("https://www.flipkart.com"), "Opening Flipkart..."),
     "myntra": lambda: (webbrowser.open("https://www.myntra.com"), "Opening Myntra..."),
     "zomato": lambda: (webbrowser.open("https://www.zomato.com"), "Opening Zomato..."),
     "swiggy": lambda: (webbrowser.open("https://www.swiggy.com"), "Opening Swiggy..."),
     # Travel & Food Sites
-    "make my trip": lambda: (webbrowser.open("https://www.makemytrip.com"), "Opening MakeMyTrip..."),
+    "makemytrip": lambda: (webbrowser.open("https://www.makemytrip.com"), "Opening MakeMyTrip..."),
     "cleartrip": lambda: (webbrowser.open("https://www.cleartrip.com"), "Opening Cleartrip..."),
     "yatra": lambda: (webbrowser.open("https://www.yatra.com"), "Opening Yatra..."),
     "goibibo": lambda: (webbrowser.open("https://www.goibibo.com"), "Opening Goibibo..."),
@@ -207,6 +271,7 @@ def process_query(user_query):
     
     # Square Root Calculation
     if "square root of" in user_query:
+
         number = extract_number(user_query, "square root of")
         if number is not None:
             result = math.sqrt(number)
@@ -214,6 +279,10 @@ def process_query(user_query):
         else:
             return "Please provide a valid number."
 
+    if "screenshot" in user_query or "capture screen" in user_query or "take a screenshot" in user_query:
+        filename = take_screenshot()
+        return f"Screenshot taken and saved"
+    
     # General Calculation
     if "calculate" in user_query:
         expression = re.sub(r"[^0-9+\-*/(). x]", "", user_query.replace("calculate", "").strip())
@@ -228,12 +297,24 @@ def process_query(user_query):
         else:
             return "Invalid input. Please enter a valid mathematical expression."
 
- 
+    if "what is my ip" in user_query or "show my ip" in user_query or "tell my ip" in user_query:
+        ip = get_ip()
+        if ip:
+            return f"Your current IP address is {ip}."
+        else:
+            return "Sorry, I couldn't fetch your IP address right now."
     
+    if "close tab" in user_query or "close the tab" in user_query or "close current tab" in user_query or "tab close" in user_query or "close this tab" in user_query:
+        close_tab()
+        return "Closing the current tab."
     
     # Fuzzy match user query with predefined commands
     match, confidence = process.extractOne(user_query, COMMANDS.keys())
-    
+
+    if "pc info" in user_query or "system info" in user_query or "device info" in user_query:
+        system_info = get_system_info()
+        return system_info
+
     if confidence > 80:
         response = COMMANDS[match]
         if callable(response):
