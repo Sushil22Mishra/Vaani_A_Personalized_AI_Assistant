@@ -1,4 +1,5 @@
 import datetime
+
 import webbrowser
 import pyautogui
 from fuzzywuzzy import process
@@ -17,6 +18,7 @@ import GPUtil
 
 
 
+# -------------------- Reminder and Notifications --------------------
 def setReminder(reminder_text, seconds):
     def reminder():
         time.sleep(seconds)
@@ -29,6 +31,45 @@ def setReminder(reminder_text, seconds):
     threading.Thread(target=reminder, daemon=True).start()
     return f"Reminder set for {seconds} seconds: {reminder_text}"
 
+
+
+# -------------------- Sytem contrl Control --------------------
+
+def increaseVolumeBy10():
+    for _ in range(5):  # Repeat 10 times to increase by 10 steps
+        pyautogui.press('volumeup')  # Increase volume by 1
+        time.sleep(0.1)  # Small delay for stability between key presses
+
+def decreaseVolumeBy10():
+    for _ in range(5):  # Repeat 10 times to decrease by 10 steps
+        pyautogui.press('volumedown')  # Decrease volume by 1
+        time.sleep(0.1)  # Small delay for stability between key presses
+
+# Function to mute/unmute the volume
+def muteVolume():
+    pyautogui.press('volumemute')  # Toggle mute/unmute
+    print("Volume toggled (muted/unmuted)")
+
+
+
+
+
+def openApp(appName):
+
+    pyautogui.press('win')  # Opens the Start menu
+    time.sleep(0.5)  # Small delay for stability
+    pyautogui.typewrite(appName)  # Types the app name
+    time.sleep(0.5)  
+    pyautogui.press('enter')  # Launches the app)
+
+
+def close_tab():
+    pyautogui.hotkey('ctrl', 'w')
+def close_window():
+    pyautogui.hotkey('alt', 'f4')
+
+
+# -------------------- System Information --------------------
 def get_ip():
     try:
         response = requests.get('https://api64.ipify.org?format=json')
@@ -39,18 +80,8 @@ def get_ip():
     except Exception:
         return None
 
-
-def openApp(appName):
-    pyautogui.press('win')  # Opens the Start menu
-    time.sleep(0.5)  # Small delay for stability
-    pyautogui.typewrite(appName)  # Types the app name
-    time.sleep(0.5)  
-    pyautogui.press('enter')  # Launches the app)
-
-
-def close_tab():
-    pyautogui.hotkey('ctrl', 'w')
 def get_system_info():
+
     # RAM info
     ram = psutil.virtual_memory()
     ram_total = round(ram.total / (1024 ** 3), 2)  # in GB
@@ -93,6 +124,8 @@ def get_system_info():
     return info
 
 
+
+# -------------------- File and Screenshot Handling --------------------
 def read_text_file(file_name):
     file_path = os.path.join("txt", file_name)  # Ensures correct path format
     try:
@@ -103,11 +136,22 @@ def read_text_file(file_name):
         return "I couldn't find my introduction file."
 
 def take_screenshot():
+    desktop_path = os.path.expanduser("~/Desktop")
+    screenshots_folder = os.path.join(desktop_path, "Screenshots")
+    
+    # Make the folder if it doesn't exist
+    os.makedirs(screenshots_folder, exist_ok=True)
+
+    # Create filename with timestamp
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"screenshot_{timestamp}.png"
+    full_path = os.path.join(screenshots_folder, filename)
+
+    # Take and save the screenshot
     screenshot = pyautogui.screenshot()
-    screenshot.save(filename)
-    return filename
+    screenshot.save(full_path)
+
+    return full_path
 
     
 
@@ -167,10 +211,10 @@ COMMANDS = {
     "forbes": lambda: (webbrowser.open("https://www.forbes.com/finance/"), "Opening Forbes Finance..."),
     "financialcalculator": lambda: (webbrowser.open("https://www.bankrate.com/calculators/"), "Opening Bankrate Calculators..."),
     "moneycontrol": lambda: (webbrowser.open("https://www.moneycontrol.com"), "Opening MoneyControl..."),
-    "economic times": lambda: (webbrowser.open("https://economictimes.indiatimes.com/markets"), "Opening Economic Times..."),
-    "ndtv profit": lambda: (webbrowser.open("https://www.ndtv.com/business"), "Opening NDTV Profit..."),
-    "yahoo financeindia": lambda: (webbrowser.open("https://in.finance.yahoo.com"), "Opening Yahoo Finance India..."),
-    "financial express": lambda: (webbrowser.open("https://www.financialexpress.com/market"), "Opening Financial Express..."),
+    "economictimes": lambda: (webbrowser.open("https://economictimes.indiatimes.com/markets"), "Opening Economic Times..."),
+    "ndtvprofit": lambda: (webbrowser.open("https://www.ndtv.com/business"), "Opening NDTV Profit..."),
+    "yahoofinanceindia": lambda: (webbrowser.open("https://in.finance.yahoo.com"), "Opening Yahoo Finance India..."),
+    "financialexpress": lambda: (webbrowser.open("https://www.financialexpress.com/market"), "Opening Financial Express..."),
     "mint": lambda: (webbrowser.open("https://www.livemint.com"), "Opening Mint..."),
 
 
@@ -191,13 +235,16 @@ COMMANDS = {
     "dominos": lambda: (webbrowser.open("https://www.dominos.co.in"), "Opening Domino's India..."),
     "freshmenu": lambda: (webbrowser.open("https://www.freshmenu.com"), "Opening FreshMenu..."),
     "ubereats": lambda: (webbrowser.open("https://www.ubereats.com"), "Opening UberEats..."),
+    "redbus": lambda: (webbrowser.open("https://www.redbus.in"), "Opening Redbus..."),
+    "busTickets": lambda: (webbrowser.open("https://www.redbus.in"), "Opening Redbus..."),
 
-    "currency converter": lambda: (webbrowser.open("https://www.xe.com/currencyconverter/"), "Opening Currency Converter..."),
+    "currencyconverter": lambda: (webbrowser.open("https://www.xe.com/currencyconverter/"), "Opening Currency Converter..."),
 
 
 
-    "introduce yourself": lambda: ("", "txt\\say.txt"),
-    "who are you": lambda: ("", "txt\\say.txt"),
+    "introduceyourself": lambda: (None, open("txt/say.txt", "r").read()),
+    "who are you": lambda: (None, open("txt/say.txt", "r").read()),
+
 
 }
 
@@ -308,6 +355,21 @@ def process_query(user_query):
         close_tab()
         return "Closing the current tab."
     
+    if "close window" in user_query or "close the window" in user_query or "close current window" in user_query or "tab close" in user_query or "close this window" in user_query:
+        close_tab()
+        return "Closing the current window."
+
+    if "increase volume" in user_query or "volume up" in user_query or "louder" in user_query:
+        increaseVolumeBy10()
+        return "Volume increased by 10."
+    elif "decrease volume" in user_query or "volume down" in user_query or "quieter" in user_query:
+        decreaseVolumeBy10()
+        return "Volume decreased by 10."
+    elif "mute volume" in user_query or "mute" in user_query or "unmute" in user_query:
+        muteVolume()
+        return "Volume muted/unmuted."
+
+
     # Fuzzy match user query with predefined commands
     match, confidence = process.extractOne(user_query, COMMANDS.keys())
 
@@ -315,7 +377,7 @@ def process_query(user_query):
         system_info = get_system_info()
         return system_info
 
-    if confidence > 80:
+    if confidence > 90:
         response = COMMANDS[match]
         if callable(response):
             _, message = response()

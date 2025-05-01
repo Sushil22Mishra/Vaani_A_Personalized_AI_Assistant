@@ -205,11 +205,7 @@ window.addEventListener('load', async () => {
         window.preferredVoice = voices[0];
     }
 
-    setTimeout(() => {
-        const test = new SpeechSynthesisUtterance("Hello, this is a voice test.");
-        test.voice = window.preferredVoice;
-        window.speechSynthesis.speak(test);
-    }, 3000);
+   
 
     document.getElementById('theme-toggle').addEventListener('click', function () {
         document.body.classList.toggle('dark-mode');
