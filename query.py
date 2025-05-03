@@ -31,6 +31,23 @@ def setReminder(reminder_text, seconds):
     threading.Thread(target=reminder, daemon=True).start()
     return f"Reminder set for {seconds} seconds: {reminder_text}"
 
+def open_sticky_notes():
+    pyautogui.press('win')
+    time.sleep(0.5)
+    pyautogui.write("sticky")
+    time.sleep(0.5)
+    pyautogui.press('enter')
+    time.sleep(1.5)  # Let Sticky Notes open fully
+    return "What should I write?"
+
+def write_note_content(content):
+    if content:
+        pyautogui.write(content)
+        pyautogui.press("enter")
+        return "Noted."
+    else:
+        return "No content received."
+
 
 
 # -------------------- Sytem contrl Control --------------------
@@ -41,10 +58,13 @@ def increaseVolumeBy10():
         time.sleep(0.1)  # Small delay for stability between key presses
 
 def decreaseVolumeBy10():
+
     for _ in range(5):  # Repeat 10 times to decrease by 10 steps
         pyautogui.press('volumedown')  # Decrease volume by 1
         time.sleep(0.1)  # Small delay for stability between key presses
 
+def lock_pc():
+    os.system("rundll32.exe user32.dll,LockWorkStation")
 # Function to mute/unmute the volume
 def muteVolume():
     pyautogui.press('volumemute')  # Toggle mute/unmute
@@ -154,7 +174,7 @@ def take_screenshot():
     return full_path
 
     
-
+note_mode = False
 
 
 # Predefined commands and their responses
@@ -251,7 +271,12 @@ COMMANDS = {
 
 # Function to process user queries
 def process_query(user_query):
+    global note_mode
     user_query = user_query.lower().strip()
+
+    if note_mode:
+        note_mode = False
+        return write_note_content(user_query)
 
      # Detect "remind me to ..." pattern
     match = re.search(r"remind me to (.+) in (\d+) (seconds?|minutes?|hours?)", user_query)
@@ -328,7 +353,7 @@ def process_query(user_query):
 
     if "screenshot" in user_query or "capture screen" in user_query or "take a screenshot" in user_query:
         filename = take_screenshot()
-        return f"Screenshot taken and saved"
+        return f"Screenshot taken and saved at desktop/screenshots"
     
     # General Calculation
     if "calculate" in user_query:
@@ -376,6 +401,18 @@ def process_query(user_query):
     if "pc info" in user_query or "system info" in user_query or "device info" in user_query:
         system_info = get_system_info()
         return system_info
+
+
+    if "take note" in user_query or "save note" in user_query or "take a note" in user_query:
+        note_mode = True
+        return open_sticky_notes()
+
+    if "lock device" in user_query or "lock pc" in user_query:
+        lock_pc()
+        return "Sure, your PC is now locked and secure."
+
+        
+
 
     if confidence > 90:
         response = COMMANDS[match]
