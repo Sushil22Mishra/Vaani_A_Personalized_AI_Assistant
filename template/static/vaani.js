@@ -18,6 +18,7 @@ const synth = window.speechSynthesis;
 
 let isListening = false;
 let userRequestedStop = false;
+let restarting = false; // New flag to avoid overlapping restarts
 
 // Load voices properly using a Promise
 function loadVoicesProperly() {
@@ -87,12 +88,37 @@ recognition.addEventListener('result', (e) => {
     handleResponse(transcript);
 });
 
+// Fix: auto-restart on end
 recognition.addEventListener('end', () => {
     wave.style.animationPlayState = 'paused';
     startBtn.disabled = false;
 
-    if (isListening && !userRequestedStop) {
-        recognition.start(); // Restart automatically if not stopped by user
+    if (isListening && !userRequestedStop && !restarting) {
+        restarting = true;
+        setTimeout(() => {
+            try {
+                recognition.start();
+            } catch (error) {
+                console.error("Error restarting recognition:", error);
+            }
+            restarting = false;
+        }, 500);
+    }
+});
+
+// Fix: auto-restart on error
+recognition.addEventListener('error', (event) => {
+    console.error('SpeechRecognition error:', event.error);
+    if (isListening && !userRequestedStop && !restarting) {
+        restarting = true;
+        setTimeout(() => {
+            try {
+                recognition.start();
+            } catch (e) {
+                console.error("Error restarting after error:", e);
+            }
+            restarting = false;
+        }, 500);
     }
 });
 
@@ -204,8 +230,6 @@ window.addEventListener('load', async () => {
         console.warn("Preferred voice not found, using default.");
         window.preferredVoice = voices[0];
     }
-
-   
 
     document.getElementById('theme-toggle').addEventListener('click', function () {
         document.body.classList.toggle('dark-mode');

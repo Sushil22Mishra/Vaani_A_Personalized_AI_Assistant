@@ -82,6 +82,8 @@ def openApp(appName):
     time.sleep(0.5)  
     pyautogui.press('enter')  # Launches the app)
 
+def switch_app():
+    pyautogui.hotkey('alt','tab')
 
 def close_tab():
     pyautogui.hotkey('ctrl', 'w')
@@ -154,6 +156,7 @@ def read_text_file(file_name):
             return content if content else "The introduction file is empty."
     except FileNotFoundError:
         return "I couldn't find my introduction file."
+
 
 def take_screenshot():
     desktop_path = os.path.expanduser("~/Desktop")
@@ -300,6 +303,10 @@ def process_query(user_query):
         openApp(app_name)
         return f"Opening {app_name}..."
     
+    if "switch tab" in user_query or "switch app" in user_query or "change app" in user_query:
+        switch_app()
+        return "Done"
+
     # Handling search queries
     if "search" in user_query:
         search_term = user_query.replace("search", "").strip()
